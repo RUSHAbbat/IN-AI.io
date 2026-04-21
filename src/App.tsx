@@ -8,8 +8,12 @@ import {
   Slide5, 
   Slide6,
   Slide7,
-  Slide8,
-  Slide9
+  Slide9,
+  Slide10,
+  Slide11,
+  Slide12,
+  Slide13,
+  Slide14
 } from "@/src/components/Slides";
 import { Button } from "@/components/ui/button";
 import { ChevronLeft, ChevronRight, Keyboard } from "lucide-react";
@@ -22,8 +26,12 @@ const SLIDES = [
   Slide5,
   Slide6,
   Slide7,
-  Slide8,
-  Slide9
+  Slide9,
+  Slide10,
+  Slide11,
+  Slide12,
+  Slide13,
+  Slide14
 ];
 
 export default function App() {
@@ -49,7 +57,7 @@ export default function App() {
   const CurrentSlideComponent = SLIDES[currentSlide];
 
   return (
-    <div className="min-h-screen bg-background text-foreground flex flex-col dark">
+    <div className="h-screen bg-background text-foreground flex flex-col dark overflow-hidden">
       {/* Background decoration */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_50%_50%,rgba(59,130,246,0.05),transparent_50%)]" />
@@ -58,39 +66,33 @@ export default function App() {
       </div>
 
       {/* Header */}
-      <header className="relative z-10 p-6 flex justify-between items-center border-b border-border/40 backdrop-blur-sm">
+      <header className="relative z-20 p-6 flex justify-between items-center border-b border-border/40 backdrop-blur-md bg-background/50">
         <div className="flex items-center gap-2">
-          <div className="w-8 h-8 bg-blue-500 rounded-lg flex items-center justify-center font-bold text-white">AI</div>
+          <div className="w-8 h-8 bg-blue-500 rounded-lg flex items-center justify-center font-bold text-white shadow-lg shadow-blue-500/20">AI</div>
           <span className="font-bold tracking-tight uppercase text-sm">Strategy 2026</span>
-        </div>
-        <div className="flex items-center gap-4">
-          <div className="flex gap-1">
-            {SLIDES.map((_, i) => (
-              <div 
-                key={i} 
-                className={`h-1 w-8 rounded-full transition-all duration-300 ${
-                  i === currentSlide ? "bg-blue-500 w-12" : "bg-muted"
-                }`} 
-              />
-            ))}
-          </div>
-          <span className="text-xs font-mono text-muted-foreground ml-2">
-            {String(currentSlide + 1).padStart(2, '0')} / {String(SLIDES.length).padStart(2, '0')}
-          </span>
         </div>
       </header>
 
       {/* Main Content */}
-      <main className="relative z-10 flex-1 flex items-center justify-center p-8 md:p-16 max-w-7xl mx-auto w-full">
-        <AnimatePresence mode="wait">
-          <div key={currentSlide} className="w-full h-full">
-            <CurrentSlideComponent />
-          </div>
-        </AnimatePresence>
+      <main className="relative z-10 flex-1 overflow-hidden p-6 md:p-8 lg:p-12 flex items-center justify-center">
+        <div className="max-w-7xl w-full h-full flex flex-col justify-center">
+          <AnimatePresence mode="wait">
+            <motion.div 
+              key={currentSlide} 
+              className="w-full"
+              initial={{ opacity: 0, scale: 0.98 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 1.02 }}
+              transition={{ duration: 0.3 }}
+            >
+              <CurrentSlideComponent />
+            </motion.div>
+          </AnimatePresence>
+        </div>
       </main>
 
       {/* Footer / Controls */}
-      <footer className="relative z-10 p-6 flex justify-between items-center border-t border-border/40 backdrop-blur-sm">
+      <footer className="relative z-20 p-6 flex justify-between items-center border-t border-border/40 backdrop-blur-md bg-background/50">
         <div className="flex items-center gap-2 text-xs text-muted-foreground font-medium uppercase tracking-widest">
           <Keyboard className="w-4 h-4" />
           <span>Используйте стрелки для навигации</span>
