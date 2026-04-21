@@ -50,8 +50,33 @@ export default function App() {
       if (e.key === "ArrowRight" || e.key === " ") nextSlide();
       if (e.key === "ArrowLeft") prevSlide();
     };
+
+    const handleMouseDown = (e: MouseEvent) => {
+      // 0 is left click, 2 is right click
+      if (e.button === 0) {
+        // Only trigger if clicking on background elements, not interactive ones
+        const target = e.target as HTMLElement;
+        if (!target.closest('button') && !target.closest('a')) {
+          nextSlide();
+        }
+      } else if (e.button === 2) {
+        prevSlide();
+      }
+    };
+
+    const handleContextMenu = (e: MouseEvent) => {
+      e.preventDefault();
+    };
+
     window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
+    window.addEventListener("mousedown", handleMouseDown);
+    window.addEventListener("contextmenu", handleContextMenu);
+
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+      window.removeEventListener("mousedown", handleMouseDown);
+      window.removeEventListener("contextmenu", handleContextMenu);
+    };
   }, [nextSlide, prevSlide]);
 
   const CurrentSlideComponent = SLIDES[currentSlide];
@@ -93,9 +118,22 @@ export default function App() {
 
       {/* Footer / Controls */}
       <footer className="relative z-20 p-6 flex justify-between items-center border-t border-border/40 backdrop-blur-md bg-background/50">
-        <div className="flex items-center gap-2 text-xs text-muted-foreground font-medium uppercase tracking-widest">
-          <Keyboard className="w-4 h-4" />
-          <span>Используйте стрелки для навигации</span>
+        <div className="flex items-center gap-4 text-[10px] md:text-xs text-muted-foreground font-medium uppercase tracking-widest">
+          <div className="flex items-center gap-2">
+            <Keyboard className="w-4 h-4 text-blue-500" />
+            <span>Стрелки / Пробел</span>
+          </div>
+          <div className="w-px h-4 bg-border/50" />
+          <div className="flex items-center gap-2">
+            <div className="flex gap-1">
+              <span className="px-1.5 py-0.5 rounded border border-border/50 bg-background">ЛКМ</span>
+              <span className="px-1.5 py-0.5 rounded border border-border/50 bg-background text-blue-500">Вперед</span>
+            </div>
+            <div className="flex gap-1">
+              <span className="px-1.5 py-0.5 rounded border border-border/50 bg-background">ПКМ</span>
+              <span className="px-1.5 py-0.5 rounded border border-border/50 bg-background text-blue-500">Назад</span>
+            </div>
+          </div>
         </div>
         <div className="flex gap-4">
           <Button 
